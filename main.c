@@ -1,91 +1,102 @@
 #include "fdf.h"
 
-void	pull_dots(t_dot *dot, int **array, int len, int ln)
+void	pull_dots(t_mlx *vars, int len, int ln)
 {
-	int	k;
-	int	kl;
-
-	k = 20;
-	kl = 3;
-	dot[0].x = len * k;
-	dot[0].y = ln * k;
-	dot[0].z = array[ln][len] * kl;
-	dot[1].x = (len + 1) * k;
-	dot[1].y = (ln + 1) * k;
-	dot[1].z = array[ln + 1][len + 1] * kl;
-	dot[2].x = (len + 1) * k;
-	dot[2].y = ln * k;
-	dot[2].z = array[ln][len + 1] * kl;
-	dot[3].x = len * k;
-	dot[3].y = (ln + 1) * k;
-	dot[3].z = array[ln + 1][len] * kl;
+	vars->dot1.x = len * vars->k;
+	vars->dot1.y = ln * vars->k;
+	vars->dot1.z = vars->array[ln][len] * (vars->k / 2 + vars->kl);
+	vars->dot2.x = (len + 1) * vars->k;
+	vars->dot2.y = (ln + 1) * vars->k;
+	vars->dot2.z = vars->array[ln + 1][len + 1] * (vars->k / 2 + vars->kl);
+	vars->dot3.x = (len + 1) * vars->k;
+	vars->dot3.y = ln * vars->k;
+	vars->dot3.z = vars->array[ln][len + 1] * (vars->k / 2 + vars->kl);
+	vars->dot4.x = len * vars->k;
+	vars->dot4.y = (ln + 1) * vars->k;
+	vars->dot4.z = vars->array[ln + 1][len] * (vars->k / 2 + vars->kl);
 }
 
-void	draw_image(t_long *lenght, float *degree, int **array, t_mlx *mlx)
+void	draw_image(t_mlx *vars)
 {
 	int		len;
 	int		ln;
-	t_dot	dot[4];
 
 	ln = -1;
-	while (++ln < lenght->number_line - 1)
+	while (++ln < vars->number_line - 1)
 	{
 		len = -1;
-		while (++len < lenght->i - 1)
+		while (++len < vars->i - 1)
 		{
-			pull_dots(dot, array, len, ln);
-			rotate_z(dot, degree);
-			rotate_x(dot, degree);
-			rotate_y(dot, degree);
-			draw_line(dot[0], dot[2], mlx);
-			draw_line(dot[0], dot[3], mlx);
-			draw_line(dot[1], dot[2], mlx);
-			draw_line(dot[1], dot[3], mlx);
+			pull_dots(vars, len, ln);
+			rotate_z(vars);
+			rotate_x(vars);
+			rotate_y(vars);
+			draw_line(vars->dot1, vars->dot3, vars);
+			draw_line(vars->dot1, vars->dot4, vars);
+			draw_line(vars->dot2, vars->dot3, vars);
+			draw_line(vars->dot2, vars->dot4, vars);
 		}
 	}
 }
 
-int	key_hook(int keycode)
+void	change_degree(int keycode, t_mlx *vars)
 {
-	if (keycode == 53)
-		exit(0);
-	return (0);
+	if (keycode == 89)
+		vars->degx += 2 * M_PI / 180;
+	else if (keycode == 91)
+		vars->degx -= 2 * M_PI / 180;
+	else if (keycode == 86)
+		vars->degy += 2 * M_PI / 180;
+	else if (keycode == 87)
+		vars->degy -= 2 * M_PI / 180;
+	else if (keycode == 83)
+		vars->degz += 2 * M_PI / 180;
+	else if (keycode == 84)
+		vars->degz -= 2 * M_PI / 180;
 }
 
-void	draw_scene(t_long *len, float *degree, int **array)
+int	key_hook(int keycode, t_mlx *vars)
 {
-	t_mlx	mlx;
-
-	mlx.mlx = mlx_init();
-	mlx.mlx_win = mlx_new_window(mlx.mlx, 1920, 1080, "test");
-	draw_image(len, degree, array, &mlx);
-	mlx_key_hook(mlx.mlx_win, key_hook, &mlx);
-	mlx_loop(mlx.mlx);
+	if (keycode == 53)
+	{
+		mlx_destroy_window(vars->mlx, vars->mlx_win);
+		exit(0);
+	}
+	if (keycode == 126)
+		vars->k += 2;
+	else if (keycode == 125)
+		vars->k -= 2;
+	else if (keycode == 123)
+		vars->kl += 1;
+	else if (keycode == 124)
+		vars->kl -= 1;
+	else
+		change_degree(keycode, vars);
+	render(vars);
+	return (0);
 }
 
 int	main(int argc, char **argv)
 {
 	int		fd;
-	int		**array;
-	t_long	len;
-	float	degree[3];
+	t_mlx	vars;
 
 	if (argc != 2)
 		return (1);
-	len.number_line = 0;
-	len.i = 0;
-	array = 0;
-	if (!get_arr(argv, &array))
+	vars.number_line = 0;
+	vars.i = 0;
+	vars.array = 0;
+	if (!get_arr(argv, &vars))
 		return (1);
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		return (1);
-	if (!parse(fd, array, &len))
+	if (!parse(fd, &vars))
 		return (1);
 	close(fd);
-	degree[0] = -70 * M_PI / 180;
-	degree[2] = 40 * M_PI / 180;
-	degree[1] = -5 * M_PI / 180;
-	draw_scene(&len, degree, array);
+	vars.degx = -70 * M_PI / 180;
+	vars.degz = 40 * M_PI / 180;
+	vars.degy = -5 * M_PI / 180;
+	draw_scene(&vars);
 	return (0);
 }

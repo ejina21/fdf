@@ -1,70 +1,70 @@
 #include "fdf.h"
 
-void	rotate_z(t_dot *dots, float *degree)
+void	rotate_z(t_mlx *vars)
 {
 	int	x;
 	int	y;
 
-	x = dots[0].x * cosf(degree[2]) - dots[0].y * sinf(degree[2]);
-	y = dots[0].x * sinf(degree[2]) + dots[0].y * cosf(degree[2]);
-	dots[0].x = x;
-	dots[0].y = y;
-	x = dots[1].x * cosf(degree[2]) - dots[1].y * sinf(degree[2]);
-	y = dots[1].x * sinf(degree[2]) + dots[1].y * cosf(degree[2]);
-	dots[1].x = x;
-	dots[1].y = y;
-	x = dots[2].x * cosf(degree[2]) - dots[2].y * sinf(degree[2]);
-	y = dots[2].x * sinf(degree[2]) + dots[2].y * cosf(degree[2]);
-	dots[2].x = x;
-	dots[2].y = y;
-	x = dots[3].x * cosf(degree[2]) - dots[3].y * sinf(degree[2]);
-	y = dots[3].x * sinf(degree[2]) + dots[3].y * cosf(degree[2]);
-	dots[3].x = x;
-	dots[3].y = y;
+	x = vars->dot1.x * cosf(vars->degz) - vars->dot1.y * sinf(vars->degz);
+	y = vars->dot1.x * sinf(vars->degz) + vars->dot1.y * cosf(vars->degz);
+	vars->dot1.x = x;
+	vars->dot1.y = y;
+	x = vars->dot2.x * cosf(vars->degz) - vars->dot2.y * sinf(vars->degz);
+	y = vars->dot2.x * sinf(vars->degz) + vars->dot2.y * cosf(vars->degz);
+	vars->dot2.x = x;
+	vars->dot2.y = y;
+	x = vars->dot3.x * cosf(vars->degz) - vars->dot3.y * sinf(vars->degz);
+	y = vars->dot3.x * sinf(vars->degz) + vars->dot3.y * cosf(vars->degz);
+	vars->dot3.x = x;
+	vars->dot3.y = y;
+	x = vars->dot4.x * cosf(vars->degz) - vars->dot4.y * sinf(vars->degz);
+	y = vars->dot4.x * sinf(vars->degz) + vars->dot4.y * cosf(vars->degz);
+	vars->dot4.x = x;
+	vars->dot4.y = y;
 }
 
-void	rotate_x(t_dot *dots, float *degree)
+void	rotate_x(t_mlx *vars)
 {
 	int	z;
 	int	y;
 
-	y = dots[0].y * cosf(degree[0]) + dots[0].z * sinf(degree[0]);
-	z = -dots[0].y * sinf(degree[0]) + dots[0].z * cosf(degree[0]);
-	dots[0].y = y;
-	dots[0].z = z;
-	y = dots[1].y * cosf(degree[0]) + dots[1].z * sinf(degree[0]);
-	z = -dots[1].y * sinf(degree[0]) + dots[1].z * cosf(degree[0]);
-	dots[1].y = y;
-	dots[1].z = z;
-	y = dots[2].y * cosf(degree[0]) + dots[2].z * sinf(degree[0]);
-	z = -dots[2].y * sinf(degree[0]) + dots[2].z * cosf(degree[0]);
-	dots[2].y = y;
-	dots[2].z = z;
-	y = dots[3].y * cosf(degree[0]) + dots[3].z * sinf(degree[0]);
-	z = -dots[3].y * sinf(degree[0]) + dots[3].z * cosf(degree[0]);
-	dots[3].y = y;
-	dots[3].z = z;
+	y = vars->dot1.y * cosf(vars->degx) + vars->dot1.z * sinf(vars->degx);
+	z = -vars->dot1.y * sinf(vars->degx) + vars->dot1.z * cosf(vars->degx);
+	vars->dot1.y = y;
+	vars->dot1.z = z;
+	y = vars->dot2.y * cosf(vars->degx) + vars->dot2.z * sinf(vars->degx);
+	z = -vars->dot2.y * sinf(vars->degx) + vars->dot2.z * cosf(vars->degx);
+	vars->dot2.y = y;
+	vars->dot2.z = z;
+	y = vars->dot3.y * cosf(vars->degx) + vars->dot3.z * sinf(vars->degx);
+	z = -vars->dot3.y * sinf(vars->degx) + vars->dot3.z * cosf(vars->degx);
+	vars->dot3.y = y;
+	vars->dot3.z = z;
+	y = vars->dot4.y * cosf(vars->degx) + vars->dot4.z * sinf(vars->degx);
+	z = -vars->dot4.y * sinf(vars->degx) + vars->dot4.z * cosf(vars->degx);
+	vars->dot4.y = y;
+	vars->dot4.z = z;
 }
 
-void	rotate_y(t_dot *dots, float *degree)
+void	rotate_y(t_mlx *vars)
 {
 	int	z;
 	int	x;
 
-	x = dots[0].x * cosf(degree[1]) + dots[0].z * sinf(degree[1]);
-	z = -dots[0].x * sinf(degree[1]) + dots[0].z * cosf(degree[1]);
-	dots[0].x = x;
-	dots[0].z = z;
-	x = dots[1].x * cosf(degree[1]) + dots[1].z * sinf(degree[1]);
-	z = -dots[1].x * sinf(degree[1]) + dots[1].z * cosf(degree[1]);
-	dots[1].x = x;
-	dots[1].z = z;
-	x = dots[2].x * cosf(degree[1]) + dots[2].z * sinf(degree[1]);
-	z = -dots[2].x * sinf(degree[1]) + dots[2].z * cosf(degree[1]);
-	dots[2].x = x;
-	dots[2].z = z;
-	x = dots[3].x * cosf(degree[1]) + dots[3].z * sinf(degree[1]);
-	z = -dots[3].x * sinf(degree[1]) + dots[3].z * cosf(degree[1]);
-	dots[3].x = x;
-	dots[3].z = z;
+	x = vars->dot1.x * cosf(vars->degy) + vars->dot1.z * sinf(vars->degy);
+	z = -vars->dot1.x * sinf(vars->degy) + vars->dot1.z * cosf(vars->degy);
+	vars->dot1.x = x;
+	vars->dot1.z = z;
+	x = vars->dot2.x * cosf(vars->degy) + vars->dot2.z * sinf(vars->degy);
+	z = -vars->dot2.x * sinf(vars->degy) + vars->dot2.z * cosf(vars->degy);
+	vars->dot2.x = x;
+	vars->dot2.z = z;
+	x = vars->dot3.x * cosf(vars->degy) + vars->dot3.z * sinf(vars->degy);
+	z = -vars->dot3.x * sinf(vars->degy) + vars->dot3.z * cosf(vars->degy);
+	vars->dot3.x = x;
+	vars->dot3.z = z;
+	x = vars->dot4.x * cosf(vars->degy) + vars->dot4.z * sinf(vars->degy);
+	z = -vars->dot4.x * sinf(vars->degy) + vars->dot4.z * cosf(vars->degy);
+	vars->dot4.x = x;
+	vars->dot4.z = z;
 }
